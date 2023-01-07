@@ -1,0 +1,8 @@
+@import url('./main-layout.css');
+@import url('./views/home-view.css');
+@import url('line-awesome/dist/line-awesome/css/line-awesome.min.css');    html {
+      --lumo-border-radius-s: 1px;
+      --lumo-border-radius-m: 2px;
+      --lumo-border-radius-l: 4px;
+
+    }
