@@ -11,12 +11,14 @@ import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import net.plazarov.chirper.security.AuthenticatedUser;
 
-@AnonymousAllowed
-@PageTitle("Login")
+@PageTitle("Login | Chirper")
 @Route(value = "login")
+@AnonymousAllowed
 public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
-    private final AuthenticatedUser authenticatedUser;
+    private static final long serialVersionUID = 1L;
+    
+	private final AuthenticatedUser authenticatedUser;
 
     public LoginView(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
@@ -24,8 +26,8 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(new LoginI18n.Header());
-        i18n.getHeader().setTitle("chirper");
-        i18n.getHeader().setDescription("Login using user/user or admin/admin");
+        i18n.getHeader().setTitle("Chirper");
+        i18n.getHeader().setDescription("Login");
         i18n.setAdditionalInformation(null);
         setI18n(i18n);
 
@@ -38,7 +40,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         if (authenticatedUser.get().isPresent()) {
             // Already logged in
             setOpened(false);
-            event.forwardTo("");
+            event.forwardTo("home");
         }
 
         setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));

@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDatabaseInitializer;
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
  * The entry point of the Spring Boot application.
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Bean;
  *
  */
 @SpringBootApplication
+@EnableJpaAuditing
 @Theme(value = "chirper")
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 public class Application implements AppShellConfigurator {

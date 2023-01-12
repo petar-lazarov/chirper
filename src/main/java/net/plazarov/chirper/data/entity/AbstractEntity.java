@@ -1,11 +1,17 @@
 package net.plazarov.chirper.data.entity;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
@@ -18,6 +24,14 @@ public abstract class AbstractEntity {
 
     @Version
     private int version;
+    
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private Date createdAt;
+    
+    @Column(name = "updated_at", nullable = false)
+    @UpdateTimestamp
+    private Date updatedAt;
 
     public Long getId() {
         return id;
@@ -25,6 +39,14 @@ public abstract class AbstractEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public Date getCreatedAt() {
+    	return createdAt;
+    }
+    
+    public Date getUpdatedAt() {
+    	return updatedAt;
     }
 
     public int getVersion() {
