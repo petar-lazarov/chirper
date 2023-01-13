@@ -1,6 +1,7 @@
 package net.plazarov.chirper.views;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -134,7 +135,9 @@ public class LoggedLayout extends AppLayout {
         		chirp.setUser(authenticatedUser.get().get());
 				binder.writeBean(chirp);
 				chirpService.update(chirp);
-				addChirpDialog.close();	
+				addChirpDialog.close();
+				UI.getCurrent().getPage().reload();
+
 			} catch (ValidationException e1) {
 				e1.printStackTrace();
 			}

@@ -45,7 +45,8 @@ public class HomeView extends VerticalLayout {
         ChirpGrid grid = new ChirpGrid(
         		service.findAllByUsers(authenticatedUser.get().get().getFollowedUsers()),
         		authenticatedUser.get().get(),
-        		userService
+        		userService,
+        		service
         		);
         add(title, grid);
     }

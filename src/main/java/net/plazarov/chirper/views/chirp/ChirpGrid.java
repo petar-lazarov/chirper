@@ -4,10 +4,12 @@ import java.util.Set;
 
 import org.hibernate.boot.model.relational.AuxiliaryDatabaseObject.Expandable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -22,6 +24,9 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouteParameters;
 import com.vaadin.flow.router.RouterLink;
@@ -37,12 +42,13 @@ public class ChirpGrid extends VerticalLayout {
 	private Set<Chirp> chirps;
 	private Grid<Chirp> grid = new Grid<>(Chirp.class, false);
 	private final User authenticatedUser;
-	private final UserService userService;
+	private UserService userService;
 	private ChirpService chirpService;
-	public ChirpGrid(Set<Chirp> chirps, User authenticatedUser, UserService userService) {
+	public ChirpGrid(Set<Chirp> chirps, User authenticatedUser, UserService userService, ChirpService chirpService) {
 		this.authenticatedUser = authenticatedUser;
 		this.chirps = chirps;
 		this.userService = userService;
+		this.chirpService = chirpService;
 		addClassName("home-view");
         grid.setHeight("100%");
         grid.setSelectionMode(SelectionMode.NONE);
@@ -51,6 +57,8 @@ public class ChirpGrid extends VerticalLayout {
         grid.setItems(chirps);
         grid.setAllRowsVisible(true);
         add(grid);
+        updateChirps(chirps);
+
         setPadding(true);
 	}
 	
@@ -80,7 +88,23 @@ public class ChirpGrid extends VerticalLayout {
         Span date = new Span(chirp.getCreatedAt().toString());
         date.addClassName("date");
         header.add(name, date);
+        
+        if(authenticatedUser.equals(user)) {
+	        Button editButton = new Button("Edit", e -> {
+	        	Dialog editDialog = createEditChirpDialog(chirp);
+	        	editDialog.open();
+	        });
+	        editButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+	        
+	        Button deleteButton = new Button("Delete", e -> {
+				chirpService.delete(chirp.getId());
+				UI.getCurrent().getPage().reload();
 
+	        });
+	        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+	        header.add(editButton, deleteButton);
+        }
+        
         Span post = new Span(chirp.getContent());
         post.addClassName("post");
 
@@ -98,7 +122,7 @@ public class ChirpGrid extends VerticalLayout {
         	if(authenticatedUser.getLikedChirps().contains(chirp)) {
             	dislikeChirp(chirp);
         	} else {
-            	likeChirp(chirp);        		
+            	likeChirp(chirp);
         	}
             UI.getCurrent().getPage().reload();
         });
@@ -113,6 +137,35 @@ public class ChirpGrid extends VerticalLayout {
         
         return card;
 	}
+	
+    private Dialog createEditChirpDialog(Chirp chirp) {
+    	Dialog editChirpDialog = new Dialog(); 
+    	editChirpDialog.setHeaderTitle("Edit chirp");
+    	BeanValidationBinder binder = new BeanValidationBinder<>(Chirp.class);
+
+    	TextArea content = new TextArea();
+    	binder.forField(content).asRequired().bind("content");
+    	content.setValue(chirp.getContent());
+    	editChirpDialog.add(content);
+    	
+    	Button saveButton = new Button("Save", e -> {
+    		try {
+				binder.writeBean(chirp);
+				chirpService.update(chirp);
+				editChirpDialog.close();	
+				UI.getCurrent().getPage().reload();
+
+			} catch (ValidationException e1) {
+				e1.printStackTrace();
+			}
+    	});
+    	saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    	
+    	editChirpDialog.getFooter().add(saveButton);
+		return editChirpDialog;
+
+	}
+
 
 	private void dislikeChirp(Chirp chirp) {
 		chirp.getLikedUsers().remove(authenticatedUser);

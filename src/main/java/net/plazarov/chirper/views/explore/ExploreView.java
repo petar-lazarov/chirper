@@ -46,7 +46,8 @@ public class ExploreView extends VerticalLayout {
         ChirpGrid grid = new ChirpGrid(
         		new HashSet<Chirp>(service.findAll()),
         		authenticatedUser.get().get(),
-        		userService
+        		userService,
+        		service
         		);
         add(title, grid);
     }

@@ -45,7 +45,7 @@ public class SearchView extends VerticalLayout {
 		searchButton = new Button("Search", e -> updateChirpGrid());
 
 		layout.add(searchTerm, searchButton);
-		grid = new ChirpGrid(new HashSet<Chirp>(), authenticatedUser.get().get(), userService);
+		grid = new ChirpGrid(new HashSet<Chirp>(), authenticatedUser.get().get(), userService, service);
 		add(title, layout, grid);
 	}
 

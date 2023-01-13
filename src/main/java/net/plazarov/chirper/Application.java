@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDatabaseInitializer;
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  *
  */
 @SpringBootApplication
+@ComponentScan
 @EnableJpaAuditing
 @Theme(value = "chirper")
 @NpmPackage(value = "line-awesome", version = "1.3.0")

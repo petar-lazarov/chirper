@@ -2,6 +2,7 @@ package net.plazarov.chirper.data.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class AbstractService<T> {
 
-    protected final JpaRepository<T, Long> repository;
+    protected JpaRepository<T, Long> repository;
 
     public AbstractService(JpaRepository<T, Long> repository)
     {
@@ -21,7 +22,7 @@ public abstract class AbstractService<T> {
     }
 
     public T update(T entity) {
-        return repository.save(entity);
+        return repository.saveAndFlush(entity);
     }
 
     public void delete(Long id) {

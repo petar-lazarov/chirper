@@ -28,6 +28,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import net.plazarov.chirper.data.entity.User;
+import net.plazarov.chirper.data.service.ChirpService;
 import net.plazarov.chirper.data.service.UserService;
 import net.plazarov.chirper.security.AuthenticatedUser;
 import net.plazarov.chirper.views.LoggedLayout;
@@ -40,6 +41,8 @@ public class ProfileView extends VerticalLayout implements HasUrlParameter<Long>
     private final AuthenticatedUser authenticatedUser;
 	private User user;
 	private UserService userService;
+	@Autowired
+	private ChirpService chirpService;
 	
 	public ProfileView(@Autowired UserService userService, AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
@@ -50,7 +53,8 @@ public class ProfileView extends VerticalLayout implements HasUrlParameter<Long>
 		TabSheet tabs = new TabSheet();
 		tabs.setWidthFull();
 		Tab chirpsTab = new Tab(new Span("Chirps"), createBadge(user.getChirps().size()));
-		tabs.add(chirpsTab, new ChirpGrid(user.getChirps(), authenticatedUser.get().get(), userService));
+		tabs.add(chirpsTab, new ChirpGrid(user.getChirps(), authenticatedUser.get().get(), userService, chirpService));
+		
 		Tab followersTab = new Tab(new Span("Followers"), createBadge(user.getFollowers().size()));
 		tabs.add(followersTab, new UserGrid(user.getFollowers(), authenticatedUser.get().get(), userService));
 		Tab folloingTab = new Tab(new Span("Following"), createBadge(user.getFollowedUsers().size()));

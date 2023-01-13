@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -50,10 +52,10 @@ public class User extends AbstractEntity {
 	@Column(length = 255)
 	private String bio;
 	
-	@OneToMany(fetch = FetchType.EAGER, targetEntity = Chirp.class)
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = Chirp.class, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<Chirp> chirps = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinTable(
 			name = "user_likes",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -61,7 +63,7 @@ public class User extends AbstractEntity {
 	)
 	private Set<Chirp> likedChirps;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinTable(
 			name = "user_followers",
 			joinColumns = @JoinColumn(name = "followed_user_id", referencedColumnName = "id"),
@@ -69,7 +71,7 @@ public class User extends AbstractEntity {
 	)
 	private Set<User> followers;
 	
-	@ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Set<User> followedUsers;
 	    
     @Enumerated(EnumType.STRING)
