@@ -1,4 +1,4 @@
-package net.plazarov.chirper.views.home;
+package net.plazarov.chirper.views.explore;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -12,6 +12,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.security.PermitAll;
@@ -26,24 +27,24 @@ import net.plazarov.chirper.security.AuthenticatedUser;
 import net.plazarov.chirper.views.LoggedLayout;
 import net.plazarov.chirper.views.chirp.ChirpGrid;
 
-@PageTitle("Home | Chirper")
-@Route(value = "home", layout = LoggedLayout.class)
+@PageTitle("Explore | Chirper")
+@Route(value = "explore", layout = LoggedLayout.class)
 @PermitAll
-public class HomeView extends VerticalLayout {
+public class ExploreView extends VerticalLayout {
 
     private static final long serialVersionUID = 1L;
     
     private final AuthenticatedUser authenticatedUser;
     private final ChirpService service;
 
-    public HomeView(AuthenticatedUser authenticatedUser, ChirpService service, @Autowired UserService userService) {
+    public ExploreView(AuthenticatedUser authenticatedUser, ChirpService service, @Autowired UserService userService) {
         this.authenticatedUser = authenticatedUser;
         this.service = service;
 		addClassName("home-view");
-		
-		H2 title = new H2("What's new");
+
+		H2 title = new H2("Explore chirps");
         ChirpGrid grid = new ChirpGrid(
-        		service.findAllByUsers(authenticatedUser.get().get().getFollowedUsers()),
+        		new HashSet<Chirp>(service.findAll()),
         		authenticatedUser.get().get(),
         		userService
         		);

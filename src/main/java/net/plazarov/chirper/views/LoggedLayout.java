@@ -57,6 +57,8 @@ import net.plazarov.chirper.data.service.ChirpService;
 import net.plazarov.chirper.data.service.UserService;
 import net.plazarov.chirper.security.AuthenticatedUser;
 import net.plazarov.chirper.views.home.HomeView;
+import net.plazarov.chirper.views.search.SearchView;
+import net.plazarov.chirper.views.explore.ExploreView;
 import net.plazarov.chirper.views.welcome.WelcomeView;
 
 public class LoggedLayout extends AppLayout {
@@ -155,8 +157,8 @@ public class LoggedLayout extends AppLayout {
 	private Tabs getTabs() {
     	Tabs tabs = new Tabs();
     	tabs.add(createTab("Home", HomeView.class));
-    	tabs.add(createTab("Explore", HomeView.class));
-    	tabs.add(createTab("Search", HomeView.class));
+    	tabs.add(createTab("Explore", ExploreView.class));
+    	tabs.add(createTab("Search", SearchView.class));
     	tabs.setOrientation(Orientation.VERTICAL);
     	return tabs;
     }

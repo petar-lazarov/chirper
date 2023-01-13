@@ -50,10 +50,10 @@ public class User extends AbstractEntity {
 	@Column(length = 255)
 	private String bio;
 	
-	@OneToMany(fetch = FetchType.EAGER, targetEntity = Chirp.class, mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = Chirp.class)
 	private Set<Chirp> chirps = new HashSet<>();
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "user_likes",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -61,7 +61,7 @@ public class User extends AbstractEntity {
 	)
 	private Set<Chirp> likedChirps;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "user_followers",
 			joinColumns = @JoinColumn(name = "followed_user_id", referencedColumnName = "id"),
@@ -69,7 +69,7 @@ public class User extends AbstractEntity {
 	)
 	private Set<User> followers;
 	
-	@ManyToMany(mappedBy = "followers")
+	@ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
 	private Set<User> followedUsers;
 	    
     @Enumerated(EnumType.STRING)
@@ -130,7 +130,7 @@ public class User extends AbstractEntity {
     }
     
     public byte[] getProfilePicture() {
-        return profilePicture;
+    	return profilePicture;
     }
     
     public void setProfilePicture(byte[] profilePicture) {

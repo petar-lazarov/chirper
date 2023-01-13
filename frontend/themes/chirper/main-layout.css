@@ -24,3 +24,7 @@ header nav a[highlight] span {
 header nav a[highlight] {
   background-color: var(--lumo-primary-color-10pct);
 }
+
+.bold {
+	font-weight: bold;
+}

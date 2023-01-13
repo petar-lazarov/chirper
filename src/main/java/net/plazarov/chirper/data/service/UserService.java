@@ -1,11 +1,7 @@
 package net.plazarov.chirper.data.service;
 
-import java.util.Optional;
+import net.plazarov.chirper.data.entity.Chirp;
 import net.plazarov.chirper.data.entity.User;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
